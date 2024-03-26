@@ -1,0 +1,47 @@
+version: "3.8"
+services:
+  #add datasource prometheus: http://prometheus:9090
+  #import dashboard 1860 https://grafana.com/grafana/dashboards/1860-node-exporter-full/
+
+  grafana:
+    image: grafana/grafana-oss
+    container_name: grafana
+    restart: unless-stopped
+    user: '0'
+    ports:
+      - '3000:3000'
+    volumes:
+      - '$PWD/grafana-vol:/var/lib/grafana'
+
+  node-exporter:
+    image: quay.io/prometheus/node-exporter
+    container_name: node_exporter
+    ports:
+      - '9100:9100'
+    command:
+      - '--path.rootfs=/host'
+      - '--collector.tcpstat'
+      - '--collector.processes'
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      - '/:/host:ro,rslave'
+
+
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus-vol:/prometheus/
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    container_name: prometheus
+    hostname: prometheus
+    user: '65534:65534'
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    environment:
+      TZ: "Europe/Moscow"
+    extra_hosts:
+      - "node_exporter:host-gateway"
+

@@ -18,7 +18,7 @@ admin/admin
 порт 9100: закрывается в цепочке INPUT потому что используется тип сети network_mode: host  
 порт 9090: iptables -I DOCKER-USER -p tcp --dport 9090 -j DROP  
 порт 3000: iptables -I DOCKER-USER -p tcp --dport 3000 -j DROP  
-пропуск трафика с bridge контейнеров на host(node exporter):
+пропуск трафика с bridge контейнеров на host(node exporter):  
 iptables -A DOCKER-USER -s 172.33.0.0/24 -j ACCEPT  
 
 подробнее об особенностях использования iptables и docker:  

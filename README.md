@@ -2,8 +2,8 @@
 Grafana + prometheus + node_exporter
 
 запуск:  
-docker compose up -d
-chown nobody -R ./prometheus-vol
+docker compose up -d  
+chown nobody -R ./prometheus-vol 
 
 
 http://IP:3000
